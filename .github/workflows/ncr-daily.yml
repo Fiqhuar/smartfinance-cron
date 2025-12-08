@@ -1,0 +1,15 @@
+name: NCR Daily Update
+
+on:
+  schedule:
+    - cron: '*/2 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Update
+        run: |
+          curl -s "https://smartfinance.in/data_update/ncr_autodataupdate.php?key=NCR2025_SF_%24j2K%238pLm9qR%21tWxYz"
+          echo "✅ Update triggered at $(date -u) UTC"
