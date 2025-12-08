@@ -2,23 +2,24 @@ name: Daily NCR Data Update
 
 on:
   schedule:
-    - cron: '48 6 * * *'  # 06:08 UTC = 12:08 PM IST daily
-  workflow_dispatch:
+    - cron: '56 6 * * *'  # 06:38 UTC = 12:08 PM IST
+  
+  workflow_dispatch:  # For manual runs
 
 jobs:
   update:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Check time zones
+      - name: Check time
         run: |
           echo "UTC Time: $(date -u)"
           echo "IST Time: $(TZ='Asia/Kolkata' date)"
       
-      - name: Trigger PHP Script
+      - name: Trigger NCR Update
         run: |
           curl -X GET "https://smartfinance.in/data_update/ncr_autodataupdate.php?key=${{ secrets.CRON_KEY }}" \
             --max-time 120 \
             --retry 2
           
-          echo "✅ Daily update completed"
+          echo "✅ Update completed at $(date -u) UTC"
