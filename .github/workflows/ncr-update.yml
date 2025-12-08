@@ -1,0 +1,34 @@
+name: NCR Daily Update
+
+on:
+  schedule:
+    - cron: '*/2 * * * *'  # Every 5 minutes
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Test run'
+        required: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log time
+        run: |
+          echo "UTC: $(date -u)"
+          echo "IST: $(TZ='Asia/Kolkata' date)"
+          
+      - name: Trigger NCR Update
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://smartfinance.in/data_update/ncr_autodataupdate.php?key=NCR2025_SF_%24j2K%238pLm9qR%21tWxYz")
+          
+          if [ "$STATUS" -eq 200 ]; then
+            echo "✅ Success! HTTP $STATUS"
+          else
+            echo "❌ Failed! HTTP $STATUS"
+            exit 1
+          fi
+          
+      - name: Complete
+        run: echo "Workflow finished at $(date -u)"
