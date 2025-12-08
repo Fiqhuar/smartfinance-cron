@@ -2,7 +2,7 @@ name: NCR Daily Update
 
 on:
   schedule:
-    - cron: '38 6 * * *'
+   - cron: '*/2 * * * *'  # Every 2 minutes
   workflow_dispatch:
 
 jobs:
