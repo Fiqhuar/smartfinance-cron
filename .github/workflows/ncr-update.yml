@@ -2,7 +2,7 @@ name: Daily NCR Data Update
 
 on:
   schedule:
-    - cron: '32 12 * * *'  # 06:38 UTC = 12:08 PM IST
+    - cron: '* * * * *'  # 06:38 UTC = 12:08 PM IST
   
   workflow_dispatch:  # For manual runs
 
